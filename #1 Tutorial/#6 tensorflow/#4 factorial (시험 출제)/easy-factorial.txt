@@ -1,0 +1,18 @@
+import tensorflow as tf
+
+f = tf.Variable(1)
+v = tf.Variable(1)
+mul = tf.multiply(f, v)
+assign_op1 = f.assign(mul)
+assign_op2 = v.assign_add(1)
+
+init_op = tf.global_variables_initializer()
+
+with tf.Session() as sess:
+    sess.run(init_op)
+    for i in range(10):
+        res = sess.run(assign_op1)
+        sess.run(assign_op2)
+        print(str(i + 1) + " : " + str(res))
+        
+    sess.close()

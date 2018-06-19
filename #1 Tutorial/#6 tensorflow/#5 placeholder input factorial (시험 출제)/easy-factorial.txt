@@ -1,0 +1,25 @@
+import tensorflow as tf
+# 데이터 학습을 위한 그릇 생성
+x = tf.placeholder(dtype=tf.int32)
+# 입력받을 변수 선언
+n = int(input("n 까지의 값을 입력하세요 : "))
+f = tf.Variable(1, name="f")
+v = tf.Variable(1, name="v")
+# 곱셈
+mul = tf.multiply(f, v)
+# 계산
+assign_op1 = f.assign(mul)
+assign_op2 = v.assign_add(1)
+# 값 초기화
+init_op = tf.global_variables_initializer()
+# Session 생성
+with tf.Session() as sess:
+    sess.run(init_op)
+
+    temp = sess.run(x, feed_dict={x:n})
+    for i in range(temp):
+        res = sess.run(assign_op1)
+        sess.run(assign_op2)
+        print(str(i + 1) + " : " + str(res))
+
+    sess.close()

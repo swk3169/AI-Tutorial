@@ -1,0 +1,12 @@
+import pandas as pd
+
+a = [[1,2,3],[4,5,6],[7,8,9]]
+data = pd.DataFrame(a, columns=('x','y','z'))
+
+z = data["z"]
+z = z*2
+print(z)
+
+data = data.drop("z", axis = 1)	#기존의 z 영역을 삭제
+data["z"] = z #새로운 z 영역 할당
+print(data)

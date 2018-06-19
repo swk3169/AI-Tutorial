@@ -1,0 +1,8 @@
+import tensorflow as tf
+
+W = tf.Variable(10)
+op = W.assign(100)  # 변경 시킬 수 있는 노드를 생성
+with tf.Session() as sess:
+    sess.run(W.initializer)
+    x=op.eval()
+    print(W.eval()) # 10

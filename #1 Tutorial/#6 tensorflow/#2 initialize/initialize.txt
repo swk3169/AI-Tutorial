@@ -1,0 +1,13 @@
+import tensorflow as tf
+
+x = tf.Variable(3, name="x")
+y = tf.Variable(4, name="y")
+f = x*x*y + y + 2
+
+with tf.Session() as sess:
+    sess.run(x.initializer) # 또는
+    x.initializer.run()
+    sess.run(y.initializer) # 또는
+    y.initializer.run()
+    result = sess.run(f)
+    print(result) # 42

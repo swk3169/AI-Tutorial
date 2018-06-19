@@ -1,0 +1,27 @@
+import tensorflow as tf
+
+# variable statement
+x = tf.placeholder(dtype=tf.int32)
+n = int(input("input : "))
+factorial = tf.Variable(1, "factorial")
+recursion = tf.Variable(1, "recursion")
+
+# calculate factorial
+multi = tf.multiply(recursion, factorial)
+assign_fact = tf.assign(factorial, multi)
+
+init = tf.global_variables_initializer()
+
+# create session
+with tf.Session() as sess:
+
+    sess.run(init)
+    temp = sess.run(x, feed_dict={x:n})
+    for i in range(1,n+1):
+        counter = tf.assign(recursion, tf.constant(i))
+        sess.run(counter)
+        sess.run(assign_fact)
+
+        print(i,"factorial is", sess.run(factorial))
+
+    sess.close()

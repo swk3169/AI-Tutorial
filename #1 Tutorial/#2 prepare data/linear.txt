@@ -1,0 +1,27 @@
+import numpy as np
+
+np.random.seed(30) #랜덤 초기값 생성, 없으면 매번 데이터가 달라진다.
+
+x0 = np.random.rand(100); #0과 1사이의 100개의 수를 생성해준다 , 이때 넘파이 1차원 배열 형태로 주어진다.
+x1 = np.random.rand(100);
+
+f = open("formula1.csv","w") #write 모드로 furmala1 파일을 연다
+f.write("x0,x1,y\n")       #속성 이름
+f.close()
+
+import pandas as pd
+
+learning_data = pd.read_csv("formula1.csv")
+
+print(learning_data.describe())
+from sklearn.model_selection import train_test_split
+train_set, test_set = train_test_split(learning_data, test_size=0.2, random_state=42)
+train_input = train_set.drop("y", axis=1)
+train_output = train_set["y"]
+
+lin_reg = LinearRegression() # 값을 선형화
+lin_reg.fit(train_input, train_output)
+
+t = [[1,1], [2,2], [3,3]]
+predicted_value = lin_reg.predict(t)
+print(predicted_value)
