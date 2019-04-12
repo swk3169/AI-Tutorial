@@ -1,0 +1,38 @@
+import pandas as pd
+from sklearn import datasets
+from sklearn.preprocessing import StandardScaler, MinMaxScaler
+boston = datasets.load_boston()
+dfX = pd.DataFrame(boston.data, columns=boston.feature_names)
+feature_names = list(boston.feature_names)
+category_feature_names = ['CHAS', 'RAD']
+numeric_feature_names = list(set(feature_names) - set(category_feature_names))
+
+# 수치 데이터만 스케일링
+scaler = MinMaxScaler()
+scaler.fit(dfX[numeric_feature_names])
+scaled_boston = scaler.transform(dfX[numeric_feature_names])
+
+# 스케일된 수치 데이터와 범주 데이터 결합
+scaled_df = pd.DataFrame(scaled_boston, columns=numeric_feature_names)
+dfX = pd.concat([scaled_df, dfX[category_feature_names]], axis=1)
+
+import sklearn.preprocessing as prp
+
+label_encoder = prp.LabelEncoder()
+onehot_encoder = prp.OneHotEncoder(categories='auto')
+dfC = pd.DataFrame()
+
+for field in category_feature_names:
+	encoded_data = label_encoder.fit_transform(dfX[field])
+	onehot_encoded_data = onehot_encoder.fit_transform(encoded_data.reshape(-1,1))
+	dfC = pd.concat([dfC, pd.DataFrame(onehot_encoded_data.toarray(), columns=[onehot_encoder.get_feature_names()])], axis=1)
+
+print(dfC.head())
+
+# 스케일된 수치 데이터와 인코딩된 범주 데이터 결합
+scaled_df = pd.DataFrame(scaled_boston, columns=numeric_feature_names)
+dfX = pd.concat([scaled_df, dfC], axis=1)
+# 입력과 출력 결합
+dfy = pd.DataFrame(boston.target, columns=["MEDV"])
+df = pd.concat([dfX, dfy], axis=1)
+print(df.head())
